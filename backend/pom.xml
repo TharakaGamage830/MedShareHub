@@ -67,11 +67,7 @@
             <artifactId>flyway-core</artifactId>
         </dependency>
         
-        <!-- Flyway PostgreSQL Support -->
-        <dependency>
-            <groupId>org.flywaydb</groupId>
-            <artifactId>flyway-database-postgresql</artifactId>
-        </dependency>
+
         
         <!-- JWT Library -->
         <dependency>
