@@ -16,11 +16,7 @@ CREATE TABLE patients (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Create trigger to auto-update updated_at timestamp
-CREATE TRIGGER update_patients_updated_at
-    BEFORE UPDATE ON patients
-    FOR EACH ROW
-    EXECUTE FUNCTION update_updated_at_column();
+-- triggers removed as JPA auditing handles updated_at
 
 -- Add comments for documentation
 COMMENT ON TABLE patients IS 'Patient demographics and identifiers';

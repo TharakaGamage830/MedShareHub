@@ -29,7 +29,8 @@ class PatientServiceTest {
         MockitoAnnotations.openMocks(this);
         patient = new Patient();
         patient.setPatientId(1L);
-        patient.setFullName("Jane Doe");
+        patient.setFirstName("Jane");
+        patient.setLastName("Doe");
         patient.setMrn("MRN-J-1");
     }
 

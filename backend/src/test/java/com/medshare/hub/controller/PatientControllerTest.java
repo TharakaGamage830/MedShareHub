@@ -35,7 +35,8 @@ public class PatientControllerTest {
         // given
         Patient patient = new Patient();
         patient.setPatientId(1L);
-        patient.setFullName("Controller Test Patient");
+        patient.setFirstName("Controller Test");
+        patient.setLastName("Patient");
         patient.setMrn("MRN-C-1");
 
         when(patientService.getPatientById(1L)).thenReturn(patient);

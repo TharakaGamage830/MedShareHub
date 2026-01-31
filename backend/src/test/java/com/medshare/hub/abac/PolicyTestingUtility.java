@@ -7,7 +7,7 @@ import com.medshare.hub.entity.MedicalRecord;
 import com.medshare.hub.entity.User;
 import com.medshare.hub.entity.Patient;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.Collections;
 
 /**
@@ -20,21 +20,21 @@ public class PolicyTestingUtility {
                 .userId(user.getUserId())
                 .role(user.getRole().name())
                 .department(user.getDepartment())
-                .certifications(user.getCertifications() != null ? user.getCertifications() : Collections.emptyList())
-                .isEmergencyCertified(user.getIsEmergencyCertified() != null && user.getIsEmergencyCertified())
+                .certifications(user.getCertifications() != null ? user.getCertifications() : new String[0])
+                .emergencyCertified(user.getEmergencyCertified() != null && user.getEmergencyCertified())
                 .build();
     }
 
     public static ResourceAttributes createResource(MedicalRecord record) {
         return ResourceAttributes.builder()
-                .recordId(record.getRecordId())
+                .resourceId(record.getRecordId())
                 .patientId(record.getPatient() != null ? record.getPatient().getPatientId() : null)
                 .sensitivityLevel(record.getSensitivityLevel().name())
                 .recordType(record.getRecordType().name())
                 .build();
     }
 
-    public static EnvironmentAttributes createEnvironment(String ip, LocalTime time) {
+    public static EnvironmentAttributes createEnvironment(String ip, LocalDateTime time) {
         return EnvironmentAttributes.builder()
                 .currentTime(time)
                 .ipAddress(ip)
@@ -45,7 +45,7 @@ public class PolicyTestingUtility {
 
     public static EnvironmentAttributes createManualEmergencyEnv(String ip, String justification) {
         return EnvironmentAttributes.builder()
-                .currentTime(LocalTime.now())
+                .currentTime(LocalDateTime.now())
                 .ipAddress(ip)
                 .isEmergency(true)
                 .justification(justification)

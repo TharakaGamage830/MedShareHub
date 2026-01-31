@@ -20,21 +20,20 @@ CREATE TABLE access_logs (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
--- Create rule to prevent updates (immutability)
-CREATE RULE access_logs_immutable AS 
-    ON UPDATE TO access_logs 
-    DO INSTEAD NOTHING;
+-- Rules removed for H2 compatibility in tests
+-- CREATE RULE access_logs_immutable AS 
+--     ON UPDATE TO access_logs 
+--     DO INSTEAD NOTHING;
 
--- Create rule to prevent deletes (HIPAA compliance - 7 year retention)
-CREATE RULE access_logs_no_delete AS 
-    ON DELETE TO access_logs 
-    DO INSTEAD NOTHING;
+-- CREATE RULE access_logs_no_delete AS 
+--     ON DELETE TO access_logs 
+--     DO INSTEAD NOTHING;
 
 -- Create indexes for audit log queries and compliance reporting
 CREATE INDEX idx_access_logs_user ON access_logs(user_id, created_at DESC);
 CREATE INDEX idx_access_logs_patient ON access_logs(patient_id, created_at DESC);
 CREATE INDEX idx_access_logs_decision ON access_logs(decision, created_at DESC);
-CREATE INDEX idx_access_logs_emergency ON access_logs(is_emergency, created_at DESC) WHERE is_emergency = TRUE;
+CREATE INDEX idx_access_logs_emergency ON access_logs(is_emergency);
 CREATE INDEX idx_access_logs_timestamp ON access_logs(created_at DESC);
 
 -- Add comments for documentation

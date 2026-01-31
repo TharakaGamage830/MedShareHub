@@ -9,7 +9,7 @@ CREATE TABLE users (
     last_name VARCHAR(100) NOT NULL,
     role VARCHAR(50) NOT NULL CHECK (role IN ('DOCTOR', 'PATIENT', 'PHARMACIST', 'ADMIN', 'INSURANCE_ADJUSTER')),
     department VARCHAR(100),
-    certifications TEXT[],
+    certifications TEXT ARRAY,
     employer VARCHAR(200),
     location VARCHAR(200),
     emergency_certified BOOLEAN DEFAULT FALSE,
@@ -17,19 +17,7 @@ CREATE TABLE users (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Create trigger to auto-update updated_at timestamp
-CREATE OR REPLACE FUNCTION update_updated_at_column()
-RETURNS TRIGGER AS $$
-BEGIN
-    NEW.updated_at = CURRENT_TIMESTAMP;
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER update_users_updated_at
-    BEFORE UPDATE ON users
-    FOR EACH ROW
-    EXECUTE FUNCTION update_updated_at_column();
+-- triggers removed as JPA auditing handles updated_at
 
 -- Add comments for documentation
 COMMENT ON TABLE users IS 'Healthcare users with ABAC attributes for access control';

@@ -4,8 +4,10 @@ import com.medshare.hub.abac.attributes.EnvironmentAttributes;
 import com.medshare.hub.abac.attributes.ResourceAttributes;
 import com.medshare.hub.abac.attributes.SubjectAttributes;
 import com.medshare.hub.abac.policies.EmergencyOverridePolicy;
+import com.medshare.hub.abac.policies.InsuranceClaimsPolicy;
 import com.medshare.hub.abac.policies.PatientSelfAccessPolicy;
 import com.medshare.hub.abac.policies.TreatingPhysicianPolicy;
+import com.medshare.hub.repository.ConsentRepository;
 import com.medshare.hub.repository.TreatmentRelationshipRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -72,7 +74,7 @@ class PolicyEvaluatorTest {
                                 .resourceType("MEDICAL_RECORD")
                                 .patientId(50L)
                                 .recordType("BILLING")
-                                .isHighlySensitive(false)
+                                .sensitivityLevel("STANDARD")
                                 .build();
 
                 EnvironmentAttributes environment = EnvironmentAttributes.builder()
@@ -134,7 +136,7 @@ class PolicyEvaluatorTest {
                                 .resourceType("MEDICAL_RECORD")
                                 .patientId(50L)
                                 .recordType("BILLING")
-                                .isHighlySensitive(true)
+                                .sensitivityLevel("CRITICAL")
                                 .build();
 
                 EnvironmentAttributes environment = EnvironmentAttributes.builder().build();

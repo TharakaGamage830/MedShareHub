@@ -29,7 +29,8 @@ public class MedicalRecordRepositoryTest {
     @BeforeEach
     void setUp() {
         patient = new Patient();
-        patient.setFullName("Record Patient");
+        patient.setFirstName("Record");
+        patient.setLastName("Patient");
         patient.setMrn("MRN-REC-1");
         entityManager.persist(patient);
     }
@@ -46,7 +47,9 @@ public class MedicalRecordRepositoryTest {
         entityManager.flush();
 
         // when
-        List<MedicalRecord> records = medicalRecordRepository.findByPatient(patient);
+        List<MedicalRecord> records = medicalRecordRepository
+                .findByPatient_PatientId(patient.getPatientId(), org.springframework.data.domain.Pageable.unpaged())
+                .getContent();
 
         // then
         assertFalse(records.isEmpty());

@@ -7,7 +7,7 @@ CREATE TABLE treatment_relationships (
     provider_id BIGINT NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
     patient_id BIGINT NOT NULL REFERENCES patients(patient_id) ON DELETE CASCADE,
     relationship_type VARCHAR(50) NOT NULL CHECK (relationship_type IN ('TREATING', 'CONSULTING', 'EMERGENCY')),
-    status VARCHAR(20) NOT NULL CHECK (status IN ('ACTIVE', 'ENDED')) DEFAULT 'ACTIVE',
+    status VARCHAR(20) DEFAULT 'ACTIVE' NOT NULL CHECK (status IN ('ACTIVE', 'ENDED')),
     start_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     end_date TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -15,7 +15,7 @@ CREATE TABLE treatment_relationships (
 );
 
 -- Create index for efficient ABAC policy lookups
-CREATE INDEX idx_treatment_rel_active_lookup ON treatment_relationships(provider_id, patient_id, status) WHERE status = 'ACTIVE';
+CREATE INDEX idx_treatment_rel_active_lookup ON treatment_relationships(provider_id, patient_id, status);
 
 -- Add comments for documentation
 COMMENT ON TABLE treatment_relationships IS 'Provider-patient treatment relationships for ABAC authorization';

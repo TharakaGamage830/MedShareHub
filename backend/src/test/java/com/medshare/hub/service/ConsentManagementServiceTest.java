@@ -14,15 +14,16 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
-class ConsentServiceTest {
+class ConsentManagementServiceTest {
 
     @Mock
     private ConsentRepository consentRepository;
 
     @InjectMocks
-    private ConsentService consentService;
+    private ConsentManagementService consentManagementService;
 
     private Consent consent;
     private Patient patient;
@@ -36,27 +37,30 @@ class ConsentServiceTest {
         consent = new Consent();
         consent.setConsentId(10L);
         consent.setPatient(patient);
-        consent.setConsentType(Consent.ConsentType.INSURANCE_SHARING);
-        consent.setStatus(Consent.ConsentStatus.ACTIVE);
-        consent.setExpirationDate(LocalDateTime.now().plusDays(30));
+        consent.setDataType(Consent.DataType.LAB_RESULTS);
+        consent.setPurpose(Consent.Purpose.TREATMENT);
+        consent.setRevoked(false);
+        consent.setExpiresAt(LocalDateTime.now().plusDays(30));
     }
 
     @Test
-    void testCheckConsent_Active_ShouldReturnTrue() {
-        when(consentRepository.findByPatientAndConsentTypeAndStatus(
-                any(), any(), eq(Consent.ConsentStatus.ACTIVE)))
-                .thenReturn(Optional.of(consent));
+    void testCheckConsent_Valid_ShouldReturnTrue() {
+        when(consentRepository.hasValidConsent(
+                any(), any(), any(), any()))
+                .thenReturn(true);
 
-        boolean hasConsent = consentService.hasActiveConsent(patient, Consent.ConsentType.INSURANCE_SHARING);
+        boolean hasConsent = consentManagementService.hasValidConsent(1L, 1L, Consent.Purpose.TREATMENT,
+                Consent.DataType.LAB_RESULTS);
         assertTrue(hasConsent);
     }
 
     @Test
     void testCheckConsent_None_ShouldReturnFalse() {
-        when(consentRepository.findByPatientAndConsentTypeAndStatus(any(), any(), any()))
-                .thenReturn(Optional.empty());
+        when(consentRepository.hasValidConsent(any(), any(), any(), any()))
+                .thenReturn(false);
 
-        boolean hasConsent = consentService.hasActiveConsent(patient, Consent.ConsentType.INSURANCE_SHARING);
+        boolean hasConsent = consentManagementService.hasValidConsent(1L, 1L, Consent.Purpose.TREATMENT,
+                Consent.DataType.LAB_RESULTS);
         assertFalse(hasConsent);
     }
 }

@@ -6,7 +6,7 @@ import com.medshare.hub.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,16 +36,7 @@ public class AuthenticationService {
 
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
-    private final BCryptPasswordEncoder passwordEncoder;
-
-    /**
-     * Default constructor provides BCryptPasswordEncoder
-     */
-    public AuthenticationService(UserRepository userRepository, JwtTokenProvider jwtTokenProvider) {
-        this.userRepository = userRepository;
-        this.jwtTokenProvider = jwtTokenProvider;
-        this.passwordEncoder = new BCryptPasswordEncoder(12); // Strength 12 for security
-    }
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * Authenticate user and generate JWT tokens

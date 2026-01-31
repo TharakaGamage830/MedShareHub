@@ -25,7 +25,8 @@ public class PatientRepositoryTest {
     void whenFindByMrn_thenReturnPatient() {
         // given
         Patient patient = new Patient();
-        patient.setFullName("Test Patient");
+        patient.setFirstName("Test");
+        patient.setLastName("Patient");
         patient.setMrn("MRN-TEST-123");
         entityManager.persist(patient);
         entityManager.flush();

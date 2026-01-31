@@ -46,7 +46,8 @@ public class AbacIntegrationTest {
         // Create a test doctor
         doctor = new User();
         doctor.setEmail("dr.test@medshare.com");
-        doctor.setFullName("Dr. Test");
+        doctor.setFirstName("Dr.");
+        doctor.setLastName("Test");
         doctor.setRole(User.UserRole.DOCTOR);
         doctor.setDepartment("cardiology");
         doctor.setPasswordHash("hashed");
@@ -54,7 +55,8 @@ public class AbacIntegrationTest {
 
         // Create a test patient
         patient = new Patient();
-        patient.setFullName("John Patient");
+        patient.setFirstName("John");
+        patient.setLastName("Patient");
         patient.setMrn("MRN123");
         patientRepository.save(patient);
 
@@ -82,7 +84,8 @@ public class AbacIntegrationTest {
         User patientUser = new User();
         patientUser.setEmail("patient@test.com");
         patientUser.setRole(User.UserRole.PATIENT);
-        patientUser.setPatient(patient);
+        patient.setUser(patientUser);
+        patientRepository.save(patient);
         userRepository.save(patientUser);
 
         EnvironmentAttributes env = EnvironmentAttributes.builder().build();

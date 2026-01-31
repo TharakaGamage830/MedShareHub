@@ -9,17 +9,13 @@ CREATE TABLE medical_records (
     title VARCHAR(255) NOT NULL,
     description TEXT,
     sensitivity_level VARCHAR(50) NOT NULL CHECK (sensitivity_level IN ('PUBLIC', 'STANDARD', 'PSYCHIATRIC', 'HIV', 'CRITICAL')),
-    content JSONB NOT NULL,
+    content JSON NOT NULL,
     created_by BIGINT REFERENCES users(user_id) ON DELETE SET NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Create trigger to auto-update updated_at timestamp
-CREATE TRIGGER update_medical_records_updated_at
-    BEFORE UPDATE ON medical_records
-    FOR EACH ROW
-    EXECUTE FUNCTION update_updated_at_column();
+-- triggers removed as JPA auditing handles updated_at
 
 -- Add comments for documentation
 COMMENT ON TABLE medical_records IS 'Medical records with FHIR R4 compatible JSON content';
