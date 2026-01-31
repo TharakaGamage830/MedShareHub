@@ -45,14 +45,13 @@ graph TD
 
 - `/backend`: Spring Boot application source code and documentation.
 - `/frontend`: React application source code and documentation.
-- `/.gemini`: Project-specific AI agent instructions and task tracking.
+- `/docs`: Technical architectural guides including [Traffic & Scalability](./docs/traffic_handling.md).
 
 ## 🏁 Getting Started
 
-To get the entire system running, please follow the detailed setup instructions in each sub-directory:
-
-1.  **[Backend Setup Guide](./backend/README.md#quick-start)**
-2.  **[Frontend Setup Guide](./frontend/README.md#setup--running)**
+1.  **Infrastructure**: Run `docker-compose up -d` to start PostgreSQL and Redis.
+2.  **Backend Setup**: Follow the [Backend Guide](./backend/README.md#quick-start).
+3.  **Frontend Setup**: Follow the [Frontend Guide](./frontend/README.md#setup--running).
 
 ## 🛡 Security & Ethics
 
