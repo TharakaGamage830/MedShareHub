@@ -39,87 +39,93 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final com.medshare.hub.security.RateLimitFilter rateLimitFilter;
-    private final com.medshare.hub.security.XssFilter xssFilter;
+        private final com.medshare.hub.security.RateLimitFilter rateLimitFilter;
+        private final com.medshare.hub.security.XssFilter xssFilter;
+        private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    /**
-     * Security filter chain configuration
-     */
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                // CSRF enabled for non-GET requests using CookieCsrfTokenRepository
-                .csrf(csrf -> csrf
-                        .csrfTokenRepository(
-                                org.springframework.security.web.csrf.CookieCsrfTokenRepository.withHttpOnlyFalse())
-                        .ignoringRequestMatchers("/api/auth/login") // Disable for initial login if necessary
-                )
+        /**
+         * Security filter chain configuration
+         */
+        @Bean
+        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+                http
+                                // CSRF enabled for non-GET requests using CookieCsrfTokenRepository
+                                .csrf(csrf -> csrf
+                                                .csrfTokenRepository(
+                                                                org.springframework.security.web.csrf.CookieCsrfTokenRepository
+                                                                                .withHttpOnlyFalse())
+                                                .ignoringRequestMatchers("/api/auth/login") // Disable for initial login
+                                                                                            // if necessary
+                                )
 
-                // CORS configuration
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                                // CORS configuration
+                                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 
-                // Stateless session (JWT)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                                // Stateless session (JWT)
+                                .sessionManagement(session -> session
+                                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-                // Authorization rules
-                .authorizeHttpRequests(auth -> auth
-                        // Public endpoints
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        .requestMatchers("/actuator/health").permitAll()
+                                // Authorization rules
+                                .authorizeHttpRequests(auth -> auth
+                                                // Public endpoints
+                                                .requestMatchers("/api/auth/**").permitAll()
+                                                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                                                .requestMatchers("/actuator/health").permitAll()
 
-                        // All other endpoints require authentication
-                        .anyRequest().authenticated())
+                                                // All other endpoints require authentication
+                                                .anyRequest().authenticated())
 
-                // Add filters
-                .addFilterBefore(rateLimitFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(xssFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                                // Add filters
+                                .addFilterBefore(rateLimitFilter, UsernamePasswordAuthenticationFilter.class)
+                                .addFilterBefore(xssFilter, UsernamePasswordAuthenticationFilter.class)
+                                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
 
-                // Secure headers
-                .headers(headers -> headers
-                        .frameOptions(frame -> frame.deny())
-                        .contentSecurityPolicy(
-                                csp -> csp.policyDirectives("default-src 'self'; frame-ancestors 'none';"))
-                        .httpStrictTransportSecurity(hsts -> hsts.includeSubDomains(true).maxAgeInSeconds(31536000L)));
+                                // Secure headers
+                                .headers(headers -> headers
+                                                .frameOptions(frame -> frame.deny())
+                                                .contentSecurityPolicy(
+                                                                csp -> csp.policyDirectives(
+                                                                                "default-src 'self'; frame-ancestors 'none';"))
+                                                .httpStrictTransportSecurity(hsts -> hsts.includeSubDomains(true)
+                                                                .maxAgeInSeconds(31536000L)));
 
-        return http.build();
-    }
+                return http.build();
+        }
 
-    /**
-     * CORS configuration for frontend
-     */
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList(
-                "http://localhost:5173", // Vite default
-                "http://localhost:3000" // React alternative
-        ));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("*"));
-        configuration.setAllowCredentials(true);
-        configuration.setMaxAge(3600L);
+        /**
+         * CORS configuration for frontend
+         */
+        @Bean
+        public CorsConfigurationSource corsConfigurationSource() {
+                CorsConfiguration configuration = new CorsConfiguration();
+                configuration.setAllowedOrigins(Arrays.asList(
+                                "http://localhost:5173", // Vite default
+                                "http://localhost:3000" // React alternative
+                ));
+                configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                configuration.setAllowedHeaders(List.of("*"));
+                configuration.setAllowCredentials(true);
+                configuration.setMaxAge(3600L);
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
+                UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+                source.registerCorsConfiguration("/**", configuration);
+                return source;
+        }
 
-    /**
-     * BCrypt password encoder (strength 12)
-     */
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(12);
-    }
+        /**
+         * BCrypt password encoder (strength 12)
+         */
+        @Bean
+        public BCryptPasswordEncoder passwordEncoder() {
+                return new BCryptPasswordEncoder(12);
+        }
 
-    /**
-     * Authentication manager bean
-     */
-    @Bean
-    public AuthenticationManager authenticationManager(
-            AuthenticationConfiguration authConfig) throws Exception {
-        return authConfig.getAuthenticationManager();
-    }
+        /**
+         * Authentication manager bean
+         */
+        @Bean
+        public AuthenticationManager authenticationManager(
+                        AuthenticationConfiguration authConfig) throws Exception {
+                return authConfig.getAuthenticationManager();
+        }
 }

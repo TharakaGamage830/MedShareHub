@@ -76,28 +76,29 @@ public class AuditService {
             String ipAddress,
             String sessionId) {
         AccessLog log = new AccessLog();
-        log.setUser(userId != null ? new com.medshare.hub.entity.User() {
+        AccessLog accessLog = new AccessLog();
+        accessLog.setUser(userId != null ? new com.medshare.hub.entity.User() {
             {
                 setUserId(userId);
             }
         } : null);
-        log.setPatient(patientId != null ? new com.medshare.hub.entity.Patient() {
+        accessLog.setPatient(patientId != null ? new com.medshare.hub.entity.Patient() {
             {
                 setPatientId(patientId);
             }
         } : null);
-        log.setResourceType(resourceType);
-        log.setResourceId(resourceId);
-        log.setAction(action);
-        log.setDecision(decision);
-        log.setPolicyMatched(policyMatched);
-        log.setDenyReason(denyReason);
-        log.setIsEmergency(isEmergency != null && isEmergency);
-        log.setJustification(justification);
-        log.setIpAddress(ipAddress);
-        log.setSessionId(sessionId);
+        accessLog.setResourceType(resourceType);
+        accessLog.setResourceId(resourceId);
+        accessLog.setAction(action);
+        accessLog.setDecision(decision);
+        accessLog.setPolicyMatched(policyMatched);
+        accessLog.setDenyReason(denyReason);
+        accessLog.setIsEmergency(isEmergency != null && isEmergency);
+        accessLog.setJustification(justification);
+        accessLog.setIpAddress(ipAddress);
+        accessLog.setSessionId(sessionId);
 
-        accessLogRepository.save(log);
+        accessLogRepository.save(accessLog);
 
         if (isEmergency != null && isEmergency) {
             log.warn("EMERGENCY ACCESS logged: User {} accessed patient {} - Justification: {}",

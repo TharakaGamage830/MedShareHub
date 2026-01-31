@@ -68,7 +68,7 @@ public class AbacInterceptor implements HandlerInterceptor {
                 .userId(user.getUserId())
                 .role(user.getRole().name())
                 .department(user.getDepartment())
-                .certifications(user.getCertifications() != null ? java.util.Arrays.asList(user.getCertifications())
+                .certifications(user.getCertifications() != null ? user.getCertifications()
                         : java.util.Collections.emptyList())
                 .build();
 
