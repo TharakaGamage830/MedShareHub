@@ -41,22 +41,21 @@ public class ConsentManagementService {
     @Transactional
     @CacheEvict(value = "policyDecisions", allEntries = true)
     public Consent grantConsent(
-        Long patientId,
-        Long grantedToUserId,
-        String grantedToOrganization,
-        Consent.DataType dataType,
-        Consent.Purpose purpose,
-        LocalDateTime expiresAt
-    ) {
+            Long patientId,
+            Long grantedToUserId,
+            String grantedToOrganization,
+            Consent.DataType dataType,
+            Consent.Purpose purpose,
+            LocalDateTime expiresAt) {
         Patient patient = patientRepository.findById(patientId)
-            .orElseThrow(() -> new IllegalArgumentException("Patient not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Patient not found"));
 
         Consent consent = new Consent();
         consent.setPatient(patient);
 
         if (grantedToUserId != null) {
-            User grantedTo User = userRepository.findById(grantedToUserId)
-                .orElseThrow(() -> new IllegalArgumentException("Granted user not found"));
+            User grantedToUser = userRepository.findById(grantedToUserId)
+                    .orElseThrow(() -> new IllegalArgumentException("Granted user not found"));
             consent.setGrantedToUser(grantedToUser);
         }
 
@@ -67,9 +66,9 @@ public class ConsentManagementService {
 
         Consent savedConsent = consentRepository.save(consent);
         log.info("Consent granted: Patient {} to {} for {} purpose",
-                 patientId,
-                 grantedToUserId != null ? "user " + grantedToUserId : grantedToOrganization,
-                 purpose);
+                patientId,
+                grantedToUserId != null ? "user " + grantedToUserId : grantedToOrganization,
+                purpose);
 
         return savedConsent;
     }
