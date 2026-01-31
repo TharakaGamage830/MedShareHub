@@ -67,6 +67,12 @@ public class User {
     @Column(name = "emergency_certified")
     private Boolean emergencyCertified = false;
 
+    @Column(name = "mfa_enabled")
+    private Boolean mfaEnabled = false;
+
+    @Column(name = "mfa_secret")
+    private String mfaSecret;
+
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;

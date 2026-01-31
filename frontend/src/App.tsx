@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import theme from './theme';
 import type { RootState } from './store';
 import LoginForm from './components/auth/LoginForm';
+import MFAVerification from './components/auth/MFAVerification';
 import Dashboard from './pages/Dashboard';
 import MedicalRecordView from './pages/records/MedicalRecordView';
 import PatientPortal from './pages/PatientPortal';
@@ -35,6 +36,7 @@ function App() {
         <Routes>
           {/* Public Routes */}
           <Route path="/login" element={<LoginForm />} />
+          <Route path="/mfa-verify" element={<MFAVerification />} />
 
           {/* Protected Routes */}
           <Route path="/" element={

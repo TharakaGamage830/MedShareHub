@@ -71,4 +71,19 @@ public class AuthController {
         log.info("User logged out");
         return ResponseEntity.ok(Map.of("message", "Logged out successfully"));
     }
+
+    /**
+     * MFA Verification endpoint
+     */
+    @PostMapping("/mfa/verify")
+    public ResponseEntity<Map<String, String>> verifyMfa(@RequestBody Map<String, String> request) {
+        String mfaToken = request.get("mfaToken");
+        String code = request.get("code");
+
+        log.info("MFA verification attempt for token: {}", mfaToken != null ? "present" : "absent");
+
+        Map<String, String> tokens = authenticationService.verifyMfa(mfaToken, code);
+
+        return ResponseEntity.ok(tokens);
+    }
 }

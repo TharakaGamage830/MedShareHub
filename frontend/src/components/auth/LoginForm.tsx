@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import api from '../../api/axios';
-import { loginStart, loginSuccess, loginFailure } from '../../store/authSlice';
+import { loginStart, loginSuccess, loginFailure, setMfaRequired } from '../../store/authSlice';
 import type { RootState } from '../../store';
 
 const LoginForm = () => {
@@ -29,6 +29,20 @@ const LoginForm = () => {
 
         try {
             const response = await api.post('/auth/login', { email, password });
+
+            // Simulation of MFA requirement
+            if (response.data.mfaRequired || email.includes('mfa')) {
+                dispatch(setMfaRequired({
+                    user: {
+                        userId: Number(response.data.userId || 1),
+                        email,
+                        role: response.data.role || 'DOCTOR'
+                    },
+                    mfaToken: response.data.mfaToken || 'mock-mfa-token'
+                }));
+                navigate('/mfa-verify');
+                return;
+            }
 
             dispatch(loginSuccess({
                 user: {

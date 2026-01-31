@@ -16,12 +16,17 @@ import DownloadIcon from '@mui/icons-material/Download';
 import type { RootState } from '../store';
 import ConsentManager from '../components/consent/ConsentManager';
 import AuditLogViewer from '../components/audit/AuditLogViewer';
+import AnomalyAlerts from '../components/audit/AnomalyAlerts';
+import MessageInbox from '../components/messages/MessageInbox';
+import NewMessageDialog from '../components/messages/NewMessageDialog';
+import SendIcon from '@mui/icons-material/Send';
 import { DownloadService } from '../services/DownloadService';
 import { MedicalRecordService } from '../services/MedicalRecordService';
 
 const PatientPortal = () => {
     const { user } = useSelector((state: RootState) => state.auth);
     const [activeTab, setActiveTab] = useState(0);
+    const [messageDialogOpen, setMessageDialogOpen] = useState(false);
 
     const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
         setActiveTab(newValue);
@@ -45,6 +50,7 @@ const PatientPortal = () => {
                     <Tab label="Dashboard" />
                     <Tab label="My Records" />
                     <Tab label="Consent Management" />
+                    <Tab label="Message Center" />
                     <Tab label="Access Log" />
                 </Tabs>
             </Paper>
@@ -81,6 +87,9 @@ const PatientPortal = () => {
                             </Paper>
                         </Grid>
                         <Grid size={{ xs: 12, md: 4 }}>
+                            <Box mb={3}>
+                                <AnomalyAlerts />
+                            </Box>
                             <Card>
                                 <CardContent>
                                     <Typography variant="h6" gutterBottom>Upcoming Appointments</Typography>
@@ -112,8 +121,29 @@ const PatientPortal = () => {
                 <ConsentManager patientId={patientId} />
             )}
 
-            {/* Access Log Tab */}
+            {/* Message Center Tab */}
             {activeTab === 3 && (
+                <Box mt={2}>
+                    <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+                        <Typography variant="h6">Your Inbox</Typography>
+                        <Button
+                            variant="contained"
+                            startIcon={<SendIcon />}
+                            onClick={() => setMessageDialogOpen(true)}
+                        >
+                            New Message
+                        </Button>
+                    </Box>
+                    <MessageInbox />
+                    <NewMessageDialog
+                        open={messageDialogOpen}
+                        onClose={() => setMessageDialogOpen(false)}
+                    />
+                </Box>
+            )}
+
+            {/* Access Log Tab */}
+            {activeTab === 4 && (
                 <Box mt={2}>
                     <AuditLogViewer patientId={patientId} />
                 </Box>

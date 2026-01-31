@@ -15,11 +15,15 @@ import PersonIcon from '@mui/icons-material/Person';
 import PeopleIcon from '@mui/icons-material/People';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import WarningIcon from '@mui/icons-material/Warning';
+import SendIcon from '@mui/icons-material/Send';
+import EmailIcon from '@mui/icons-material/Email';
 import type { RootState } from '../store';
 import { logout } from '../store/authSlice';
 import PatientSearch from '../components/dashboard/PatientSearch';
 import StatCard from '../components/dashboard/StatCard';
 import RecentPatients from '../components/dashboard/RecentPatients';
+import MessageInbox from '../components/messages/MessageInbox';
+import AnomalyAlerts from '../components/audit/AnomalyAlerts';
 
 const Dashboard = () => {
     const dispatch = useDispatch();
@@ -113,8 +117,25 @@ const Dashboard = () => {
                     </Grid>
 
                     {/* Sidebar: Recent Patients */}
-                    <Grid size={{ xs: 12, md: 4 }}>
+                    <Grid size={{ xs: 12, md: 8 }}>
                         <RecentPatients />
+                    </Grid>
+                    <Grid size={{ xs: 12, md: 4 }}>
+                        <Box mb={3}>
+                            <AnomalyAlerts />
+                        </Box>
+                        <Paper sx={{ p: 2 }}>
+                            <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
+                                <Box display="flex" alignItems="center" gap={1}>
+                                    <EmailIcon color="primary" />
+                                    <Typography variant="h6">Inbox</Typography>
+                                </Box>
+                                <Button size="small" variant="outlined" startIcon={<SendIcon />}>
+                                    New
+                                </Button>
+                            </Box>
+                            <MessageInbox />
+                        </Paper>
                     </Grid>
                 </Grid>
             </Container>

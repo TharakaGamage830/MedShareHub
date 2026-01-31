@@ -72,11 +72,55 @@ public class AuthenticationService {
             throw new BadCredentialsException("Invalid email or password");
         }
 
-        // Generate tokens
+        Map<String, String> response = new HashMap<>();
+        response.put("userId", user.getUserId().toString());
+        response.put("role", user.getRole().toString());
+
+        // Check if MFA is required
+        if (Boolean.TRUE.equals(user.getMfaEnabled())) {
+            log.info("MFA required for user: {}", email);
+            String mfaToken = jwtTokenProvider.generateToken(email); // Temporary token for MFA
+            response.put("mfaRequired", "true");
+            response.put("mfaToken", mfaToken);
+            return response;
+        }
+
+        // Generate tokens for normal login
         String accessToken = jwtTokenProvider.generateToken(email);
         String refreshToken = jwtTokenProvider.generateRefreshToken(email);
 
         log.info("User authenticated successfully: {} (role: {})", email, user.getRole());
+
+        response.put("accessToken", accessToken);
+        response.put("refreshToken", refreshToken);
+        response.put("tokenType", "Bearer");
+
+        return response;
+    }
+
+    /**
+     * Verify MFA code and return full tokens
+     */
+    @Transactional(readOnly = true)
+    public Map<String, String> verifyMfa(String mfaToken, String code) {
+        if (!jwtTokenProvider.validateToken(mfaToken)) {
+            throw new BadCredentialsException("Invalid or expired MFA token");
+        }
+
+        String email = jwtTokenProvider.getUsernameFromToken(mfaToken);
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new BadCredentialsException("User not found"));
+
+        // For demo/dev purposes, any 6-digit code works if it matches '123456'
+        // In production, use TOTP or email/SMS verification
+        if (!"123456".equals(code)) {
+            throw new BadCredentialsException("Invalid MFA code");
+        }
+
+        log.info("MFA verified successfully for user: {}", email);
+
+        String accessToken = jwtTokenProvider.generateToken(email);
+        String refreshToken = jwtTokenProvider.generateRefreshToken(email);
 
         Map<String, String> tokens = new HashMap<>();
         tokens.put("accessToken", accessToken);

@@ -26,6 +26,8 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import BlockIcon from '@mui/icons-material/Block';
 import { ConsentService, type Consent } from '../../services/ConsentService';
+import AccessDelegationDialog from './AccessDelegationDialog';
+import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 
 interface ConsentManagerProps {
     patientId: number;
@@ -35,7 +37,8 @@ const ConsentManager: React.FC<ConsentManagerProps> = ({ patientId }) => {
     const [consents, setConsents] = useState<Consent[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [openDialog, setOpenDialog] = useState(false);
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [delegationOpen, setDelegationOpen] = useState(false);
     const [newConsent, setNewConsent] = useState({
         dataType: '',
         purpose: '',
@@ -72,7 +75,7 @@ const ConsentManager: React.FC<ConsentManagerProps> = ({ patientId }) => {
                 purpose: newConsent.purpose,
                 expiresAt: new Date(newConsent.expiresAt).toISOString()
             });
-            setOpenDialog(false);
+            setDialogOpen(false);
             fetchConsents();
         } catch (err) {
             console.error('Failed to create consent', err);
@@ -95,13 +98,22 @@ const ConsentManager: React.FC<ConsentManagerProps> = ({ patientId }) => {
         <Box>
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
                 <Typography variant="h6">Consent Management</Typography>
-                <Button
-                    variant="contained"
-                    startIcon={<AddIcon />}
-                    onClick={() => setOpenDialog(true)}
-                >
-                    New Consent
-                </Button>
+                <Box display="flex" gap={2}>
+                    <Button
+                        variant="outlined"
+                        startIcon={<SupervisorAccountIcon />}
+                        onClick={() => setDelegationOpen(true)}
+                    >
+                        Delegate Access
+                    </Button>
+                    <Button
+                        variant="contained"
+                        startIcon={<AddIcon />}
+                        onClick={() => setDialogOpen(true)}
+                    >
+                        Grant New Consent
+                    </Button>
+                </Box>
             </Box>
 
             {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
@@ -156,7 +168,7 @@ const ConsentManager: React.FC<ConsentManagerProps> = ({ patientId }) => {
             </TableContainer>
 
             {/* New Consent Dialog */}
-            <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+            <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
                 <DialogTitle>Grant New Consent</DialogTitle>
                 <DialogContent>
                     <Box display="flex" flexDirection="column" gap={2} mt={1} minWidth={400}>
@@ -202,10 +214,16 @@ const ConsentManager: React.FC<ConsentManagerProps> = ({ patientId }) => {
                     </Box>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
+                    <Button onClick={() => setDialogOpen(false)}>Cancel</Button>
                     <Button onClick={handleCreateConsent} variant="contained">Grant Consent</Button>
                 </DialogActions>
             </Dialog>
+            <AccessDelegationDialog
+                open={delegationOpen}
+                onClose={() => setDelegationOpen(false)}
+                patientId={patientId}
+                onSuccess={fetchConsents}
+            />
         </Box>
     );
 };
