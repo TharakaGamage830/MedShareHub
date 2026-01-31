@@ -7,6 +7,8 @@ import theme from './theme';
 import type { RootState } from './store';
 import LoginForm from './components/auth/LoginForm';
 import Dashboard from './pages/Dashboard';
+import MedicalRecordView from './pages/records/MedicalRecordView';
+import PatientPortal from './pages/PatientPortal';
 
 const NotFound = () => <Box p={4}>404 Not Found</Box>;
 
@@ -38,6 +40,16 @@ function App() {
           <Route path="/" element={
             <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/records/:patientId" element={
+            <ProtectedRoute>
+              <MedicalRecordView />
+            </ProtectedRoute>
+          } />
+          <Route path="/portal" element={
+            <ProtectedRoute>
+              <PatientPortal />
             </ProtectedRoute>
           } />
 

@@ -113,9 +113,14 @@ public class MedicalRecordController {
      * Extract user ID from authentication
      * In production, this would come from JWT claims
      */
+    /**
+     * Extract user ID from authentication
+     */
     private Long extractUserIdFromAuth(Authentication authentication) {
-        // Placeholder: In production, extract from JWT token
-        // For now, we'll assume userId is part of the authentication details
-        return 1L; // TODO: Implement proper JWT user extraction
+        if (authentication != null
+                && authentication.getPrincipal() instanceof com.medshare.hub.security.CustomUserDetails) {
+            return ((com.medshare.hub.security.CustomUserDetails) authentication.getPrincipal()).getUserId();
+        }
+        throw new com.medshare.hub.exception.ResourceNotFoundException("User identity not found in security context");
     }
 }

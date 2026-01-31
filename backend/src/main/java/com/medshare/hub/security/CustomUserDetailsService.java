@@ -29,14 +29,12 @@ public class CustomUserDetailsService implements UserDetailsService {
         com.medshare.hub.entity.User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + email));
 
-        return User.builder()
-                .username(user.getEmail())
-                .password(user.getPasswordHash())
-                .authorities(new ArrayList<>()) // Implement role-based authorities if needed
-                .accountExpired(false)
-                .accountLocked(false)
-                .credentialsExpired(false)
-                .disabled(false)
-                .build();
+        return new CustomUserDetails(
+                user.getUserId(),
+                user.getEmail(),
+                user.getPasswordHash(),
+                true, true, true, true,
+                new ArrayList<>() // Implement role-based authorities if needed
+        );
     }
 }
