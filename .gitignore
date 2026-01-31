@@ -1,0 +1,14 @@
+# Exclude all markdown files from GitHub as requested
+*.md
+docs/*.md
+backend/*.md
+frontend/*.md
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
