@@ -22,6 +22,7 @@ import NewMessageDialog from '../components/messages/NewMessageDialog';
 import SendIcon from '@mui/icons-material/Send';
 import { DownloadService } from '../services/DownloadService';
 import { MedicalRecordService } from '../services/MedicalRecordService';
+import BrandText from '../components/BrandText';
 
 const PatientPortal = () => {
     const { user } = useSelector((state: RootState) => state.auth);
@@ -37,13 +38,13 @@ const PatientPortal = () => {
     const patientId = user?.userId || 0;
 
     return (
-        <Container maxWidth="lg" sx={{ mt: 4 }} component="main">
-            <Typography variant="h4" gutterBottom fontWeight="bold" component="h1">
-                Patient Portal
-            </Typography>
-            <Typography variant="subtitle1" color="textSecondary" paragraph component="p">
-                Welcome back, {user?.email}
-            </Typography>
+        <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }} component="main">
+            <Box mb={6} sx={{ p: 4, bgcolor: 'white', borderRadius: 4, boxShadow: '0 4px 20px rgba(0,0,0,0.03)', borderLeft: '6px solid', borderColor: 'secondary.main' }}>
+                <BrandText variant="h3" component="h1" sx={{ mb: 1 }} />
+                <Typography variant="h6" color="textSecondary" sx={{ fontWeight: 400 }}>
+                    Welcome back, {user?.email}. Securely manage your healthcare journey on the <BrandText variant="h6" component="span" showHub={false} /> platform.
+                </Typography>
+            </Box>
 
             <Paper sx={{ mb: 3 }} component="nav" aria-label="Portal Sections">
                 <Tabs

@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;\r
 import java.util.Map;
 
 @RestController
@@ -16,6 +17,21 @@ import java.util.Map;
 public class ComplianceController {
 
     private final ComplianceService complianceService;
+
+    @GetMapping("/anomalies")
+    public ResponseEntity<List<Map<String, Object>>> getAnomalies() {
+        // TODO: Implement actual anomaly detection logic
+        return ResponseEntity.ok(java.util.Collections.emptyList());
+    }
+
+    @GetMapping("/statistics")
+    public ResponseEntity<Map<String, Object>> getStatistics() {
+        // TODO: Implement actual statistics calculation
+        return ResponseEntity.ok(Map.of(
+                "activePatients", 0,
+                "pendingConsents", 0,
+                "emergencyAccess", 0));
+    }
 
     @PostMapping("/reports/generate")
     public ResponseEntity<Map<String, Object>> generateReport(@RequestBody Map<String, Object> request) {

@@ -1,5 +1,6 @@
 # Exclude all markdown files from GitHub as requested
 *.md
+*.pdf
 docs/*.md
 backend/*.md
 frontend/*.md

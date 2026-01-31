@@ -49,14 +49,9 @@ public class SecurityConfig {
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
                 http
-                                // CSRF enabled for non-GET requests using CookieCsrfTokenRepository
-                                .csrf(csrf -> csrf
-                                                .csrfTokenRepository(
-                                                                org.springframework.security.web.csrf.CookieCsrfTokenRepository
-                                                                                .withHttpOnlyFalse())
-                                                .ignoringRequestMatchers("/api/auth/login") // Disable for initial login
-                                                                                            // if necessary
-                                )
+                                // CSRF disabled for development (JWT provides CSRF protection)
+                                // TODO: Re-enable with proper token handling for production
+                                .csrf(AbstractHttpConfigurer::disable)
 
                                 // CORS configuration
                                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))

@@ -12,38 +12,40 @@ import { createTheme } from '@mui/material/styles';
 const theme = createTheme({
     palette: {
         primary: {
-            main: '#2C5F8D',
-            light: '#5E8BB9',
-            dark: '#003663',
+            main: '#0B5ED7', // Tech Blue
+            light: '#42a5f5',
+            dark: '#084297',
             contrastText: '#ffffff',
         },
         secondary: {
-            main: '#34A853',
-            light: '#6CCF82',
-            dark: '#007926',
+            main: '#2FA84F', // Healthcare Green
+            light: '#5eba70',
+            dark: '#1e6b32',
             contrastText: '#ffffff',
         },
         error: {
-            main: '#D32F2F',
+            main: '#d32f2f',
         },
         background: {
-            default: '#F5F7FA',
+            default: '#f8f9fa',
             paper: '#ffffff',
         },
         text: {
-            primary: '#1A2027',
-            secondary: '#5E6B77',
+            primary: '#2d3436',
+            secondary: '#636e72',
         },
     },
     typography: {
-        fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
+        fontFamily: '"Inter", "Segoe UI", "Roboto", "Helvetica", "Arial", sans-serif',
         h1: {
-            fontWeight: 700,
-            fontSize: '2.5rem',
+            fontWeight: 800,
+            fontSize: '2.75rem',
+            letterSpacing: '-0.02em',
         },
         h2: {
-            fontWeight: 600,
-            fontSize: '2rem',
+            fontWeight: 700,
+            fontSize: '2.25rem',
+            letterSpacing: '-0.01em',
         },
         h3: {
             fontWeight: 600,

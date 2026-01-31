@@ -24,6 +24,7 @@ import StatCard from '../components/dashboard/StatCard';
 import RecentPatients from '../components/dashboard/RecentPatients';
 import MessageInbox from '../components/messages/MessageInbox';
 import AnomalyAlerts from '../components/audit/AnomalyAlerts';
+import BrandText from '../components/BrandText';
 
 const Dashboard = () => {
     const dispatch = useDispatch();
@@ -42,14 +43,29 @@ const Dashboard = () => {
                 component="nav"
                 aria-label="Main Navigation"
             >
-                <Toolbar>
-                    <Typography
-                        variant="h6"
-                        component="h2"
-                        sx={{ flexGrow: 1, fontWeight: 'bold' }}
+                <Toolbar sx={{ py: 1 }}>
+                    <Box
+                        display="flex"
+                        alignItems="center"
+                        gap={1}
+                        sx={{
+                            flexGrow: 1,
+                            bgcolor: 'white',
+                            px: 2,
+                            py: 0.5,
+                            borderRadius: 2,
+                            width: 'fit-content',
+                            boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                        }}
                     >
-                        MedShare Hub
-                    </Typography>
+                        <Box
+                            component="img"
+                            src="/MedShare Hub.png"
+                            sx={{ height: 32, borderRadius: 1 }}
+                            alt=""
+                        />
+                        <BrandText variant="h6" />
+                    </Box>
                     <Box display="flex" alignItems="center" gap={1}>
                         <Box
                             display="flex"
@@ -82,13 +98,13 @@ const Dashboard = () => {
                 </Toolbar>
             </AppBar>
 
-            <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }} component="main">
-                <Box mb={4}>
-                    <Typography variant="h4" component="h1" gutterBottom fontWeight="bold">
-                        Welcome, Dr. {user?.email.split('@')[0]}
+            <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }} component="main">
+                <Box mb={6} sx={{ p: 4, bgcolor: 'white', borderRadius: 4, boxShadow: '0 4px 20px rgba(0,0,0,0.03)', borderLeft: '6px solid', borderColor: 'primary.main' }}>
+                    <Typography variant="h3" component="h1" gutterBottom color="primary.dark" sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                        Welcome, Dr. {user?.email?.split('@')[0] || 'User'}
                     </Typography>
-                    <Typography color="textSecondary">
-                        Manage your patients and access logs from your secure dashboard.
+                    <Typography variant="h6" color="textSecondary" sx={{ fontWeight: 400 }}>
+                        Your secure patient management and clinical audit dashboard for <BrandText variant="h6" component="span" showHub={false} />.
                     </Typography>
                 </Box>
 
