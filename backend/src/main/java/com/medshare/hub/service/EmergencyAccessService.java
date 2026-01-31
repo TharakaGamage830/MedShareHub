@@ -15,6 +15,7 @@ public class EmergencyAccessService {
 
     private final AuditService auditService;
     private final UserRepository userRepository;
+    private final NotificationService notificationService;
 
     @Transactional
     public void performBreakGlass(Long userId, Long patientId, String reason) {
@@ -29,14 +30,18 @@ public class EmergencyAccessService {
                 userId,
                 patientId,
                 "EMERGENCY_OVERRIDE",
-                "PERMIT",
-                "Break-glass triggered. Reason: " + reason);
+                null, // Resource ID not applicable to general patient record access in this context
+                AccessLog.Action.READ,
+                AccessLog.Decision.PERMIT,
+                "EmergencyOverridePolicy",
+                null,
+                true,
+                reason,
+                null, // IP
+                null // Session
+        );
 
-        // TODO: In a real system, send email/SMS notification to supervisor
-        notifySupervisor(user, patientId, reason);
-    }
-
-    private void notifySupervisor(User user, Long patientId, String reason) {
-        log.warn("NOTIFICATION SENT: Supervisor alerted for emergency access by {}", user.getFullName());
+        // Alert supervisors via notification service
+        notificationService.sendEmergencyAlert(user, patientId, reason);
     }
 }

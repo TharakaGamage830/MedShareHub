@@ -49,7 +49,8 @@ const PatientPortal = () => {
                 <Tabs
                     value={activeTab}
                     onChange={handleTabChange}
-                    centered
+                    variant="scrollable"
+                    scrollButtons="auto"
                     aria-label="Patient portal content tabs"
                 >
                     <Tab label="Dashboard" id="portal-tab-0" aria-controls="portal-panel-0" />

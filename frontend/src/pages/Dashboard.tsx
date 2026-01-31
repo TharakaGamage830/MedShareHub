@@ -50,12 +50,22 @@ const Dashboard = () => {
                     >
                         MedShare Hub
                     </Typography>
-                    <Box display="flex" alignItems="center" gap={2}>
-                        <Box display="flex" alignItems="center" gap={1} aria-label={`Logged in as ${user?.email}`}>
+                    <Box display="flex" alignItems="center" gap={1}>
+                        <Box
+                            display="flex"
+                            alignItems="center"
+                            gap={1}
+                            aria-label={`Logged in as ${user?.email}`}
+                            sx={{ display: { xs: 'none', sm: 'flex' } }}
+                        >
                             <PersonIcon fontSize="small" aria-hidden="true" />
                             <Typography variant="subtitle2">
                                 {user?.email} ({user?.role})
                             </Typography>
+                        </Box>
+                        {/* Shorthand for mobile */}
+                        <Box sx={{ display: { xs: 'flex', sm: 'none' } }}>
+                            <PersonIcon fontSize="small" color="inherit" />
                         </Box>
                         <Button
                             variant="outlined"
@@ -64,8 +74,9 @@ const Dashboard = () => {
                             onClick={handleLogout}
                             startIcon={<LogoutIcon aria-hidden="true" />}
                             aria-label="Logout from system"
+                            sx={{ minWidth: { xs: 'auto', sm: 'inherit' } }}
                         >
-                            Logout
+                            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>Logout</Box>
                         </Button>
                     </Box>
                 </Toolbar>
