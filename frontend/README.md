@@ -1,73 +1,85 @@
-# React + TypeScript + Vite
+# MedShare Hub - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> Secure, Accessible, and Patient-Centric Healthcare Interface
 
-Currently, two official plugins are available:
+## Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The MedShare Hub frontend is a React-based web application designed for secure healthcare data exchange. It provides dedicated portals for doctors (Dashboard) and patients (Portal), implementing advanced security features like MFA and fine-grained ABAC authorization feedback.
 
-## React Compiler
+## Key Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- 🔐 **Multi-Factor Authentication (MFA)** - Integrated verification flow after initial login
+- 🏥 **Provider Dashboard** - Patient search, medical record management, and anomaly alerts
+- 👤 **Patient Portal** - Self-access to records, consent management, and secure messaging
+- 💬 **Secure Message Center** - Internal encrypted messaging between providers and patients
+- 🛡️ **ABAC Authorization Feedback** - UI-level enforcement of Attribute-Based Access Control
+- ♿ **WCAG 2.1 AA Compliant** - High accessibility standards with full ARIA support
+- 📊 **Compliance Reporting** - Automated generation of HIPAA-related access reports
 
-## Expanding the ESLint configuration
+## Technology Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Framework**: React 18 with Vite
+- **Language**: TypeScript
+- **Styling**: Material-UI (MUI) v6
+- **State Management**: Redux Toolkit
+- **API Client**: Axios with interceptors
+- **Icons**: MUI Icons
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Project Structure
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```text
+src/
+├── api/             # API client and interceptors
+├── components/      # Reusable UI components
+│   ├── auth/        # Login and MFA
+│   ├── dashboard/   # Provider-specific components
+│   ├── portal/      # Patient-specific components
+│   ├── messages/    # Messaging system
+│   └── audit/       # Security and logging components
+├── pages/           # Main page views (Dashboard, PatientPortal)
+├── services/        # Business logic and API abstraction
+├── store/           # Redux slices and store configuration
+└── theme/           # MUI theme definition
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Setup & Running
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Prerequisites
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- Node.js 18+
+- npm or yarn
+
+### Installation
+
+```bash
+npm install
 ```
+
+### Running Locally
+
+```bash
+npm run dev
+```
+
+### Building for Production
+
+```bash
+npm run build
+```
+
+## Accessibility Standards
+
+This project follows **WCAG 2.1 AA** guidelines:
+- Full keyboard navigation support
+- Semantic HTML landmarks (`<main>`, `<nav>`, `<aside>`)
+- Detailed ARIA attributes for dynamic content
+- Screen reader-friendly tables and forms
+- High contrast color palette
+
+## Security Notice
+
+All data displayed in the frontend is subject to strict backend authorization. The UI provides a representation of the **Attribute-Based Access Control (ABAC)** rules, but final enforcement happens at the API level.
+
+---
+MedShare Hub © 2026
+

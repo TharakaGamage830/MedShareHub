@@ -70,9 +70,24 @@ const MFAVerification = () => {
                         Please enter the 6-digit code sent to your registered device.
                     </Typography>
 
-                    {error && <Alert severity="error" sx={{ width: '100%', mt: 2 }}>{error}</Alert>}
+                    {error && (
+                        <Alert
+                            severity="error"
+                            sx={{ width: '100%', mt: 2 }}
+                            role="alert"
+                            aria-live="assertive"
+                        >
+                            {error}
+                        </Alert>
+                    )}
 
-                    <Box component="form" onSubmit={handleVerify} noValidate sx={{ mt: 3, width: '100%' }}>
+                    <Box
+                        component="form"
+                        onSubmit={handleVerify}
+                        noValidate
+                        sx={{ mt: 3, width: '100%' }}
+                        aria-label="Two-Factor Authentication Form"
+                    >
                         <TextField
                             required
                             fullWidth
@@ -82,7 +97,12 @@ const MFAVerification = () => {
                             autoFocus
                             value={code}
                             onChange={(e) => setCode(e.target.value)}
-                            inputProps={{ maxLength: 6, style: { textAlign: 'center', letterSpacing: '0.5em', fontSize: '1.5rem' } }}
+                            inputProps={{
+                                maxLength: 6,
+                                style: { textAlign: 'center', letterSpacing: '0.5em', fontSize: '1.5rem' },
+                                'aria-label': '6-digit verification code',
+                                'aria-required': true
+                            }}
                             disabled={verifying}
                         />
                         <Button
@@ -91,14 +111,17 @@ const MFAVerification = () => {
                             variant="contained"
                             sx={{ mt: 3, mb: 2, height: 48 }}
                             disabled={verifying || code.length < 6}
+                            aria-busy={verifying}
+                            aria-label={verifying ? "Verifying code, please wait" : "Verify Code"}
                         >
-                            {verifying ? <CircularProgress size={24} /> : 'Verify'}
+                            {verifying ? <CircularProgress size={24} aria-hidden="true" /> : 'Verify'}
                         </Button>
                         <Button
                             fullWidth
                             variant="text"
                             size="small"
                             onClick={() => navigate('/login')}
+                            aria-label="Back to login screen"
                         >
                             Back to Login
                         </Button>

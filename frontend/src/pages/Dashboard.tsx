@@ -34,27 +34,44 @@ const Dashboard = () => {
     };
 
     return (
-        <Box sx={{ flexGrow: 1, bgcolor: 'grey.50', minHeight: '100vh' }}>
-            <AppBar position="static" elevation={0} sx={{ borderBottom: '1px solid', borderColor: 'divider' }}>
+        <Box sx={{ flexGrow: 1, bgcolor: 'grey.50', minHeight: '100vh' }} component="div" role="presentation">
+            <AppBar
+                position="static"
+                elevation={0}
+                sx={{ borderBottom: '1px solid', borderColor: 'divider' }}
+                component="nav"
+                aria-label="Main Navigation"
+            >
                 <Toolbar>
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontWeight: 'bold' }}>
+                    <Typography
+                        variant="h6"
+                        component="h2"
+                        sx={{ flexGrow: 1, fontWeight: 'bold' }}
+                    >
                         MedShare Hub
                     </Typography>
                     <Box display="flex" alignItems="center" gap={2}>
-                        <Box display="flex" alignItems="center" gap={1}>
-                            <PersonIcon fontSize="small" />
+                        <Box display="flex" alignItems="center" gap={1} aria-label={`Logged in as ${user?.email}`}>
+                            <PersonIcon fontSize="small" aria-hidden="true" />
                             <Typography variant="subtitle2">
                                 {user?.email} ({user?.role})
                             </Typography>
                         </Box>
-                        <Button variant="outlined" color="inherit" size="small" onClick={handleLogout} startIcon={<LogoutIcon />}>
+                        <Button
+                            variant="outlined"
+                            color="inherit"
+                            size="small"
+                            onClick={handleLogout}
+                            startIcon={<LogoutIcon aria-hidden="true" />}
+                            aria-label="Logout from system"
+                        >
                             Logout
                         </Button>
                     </Box>
                 </Toolbar>
             </AppBar>
 
-            <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+            <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }} component="main">
                 <Box mb={4}>
                     <Typography variant="h4" component="h1" gutterBottom fontWeight="bold">
                         Welcome, Dr. {user?.email.split('@')[0]}
@@ -67,45 +84,47 @@ const Dashboard = () => {
                 <Grid container spacing={4}>
                     {/* Main Content: Search and Stats */}
                     <Grid size={{ xs: 12, md: 8 }}>
-                        <Box mb={4}>
-                            <Typography variant="h6" gutterBottom>Find Patient</Typography>
+                        <Box mb={4} component="section" aria-labelledby="search-title">
+                            <Typography id="search-title" variant="h6" gutterBottom>Find Patient</Typography>
                             <PatientSearch />
                         </Box>
 
-                        <Typography variant="h6" gutterBottom>Quick Overview</Typography>
-                        <Grid container spacing={3}>
-                            <Grid size={{ xs: 12, sm: 4 }}>
-                                <StatCard
-                                    title="Active Patients"
-                                    value="12"
-                                    icon={<PeopleIcon />}
-                                    actionLabel="View All"
-                                />
+                        <Box component="section" aria-labelledby="overview-title">
+                            <Typography id="overview-title" variant="h6" gutterBottom>Quick Overview</Typography>
+                            <Grid container spacing={3}>
+                                <Grid size={{ xs: 12, sm: 4 }}>
+                                    <StatCard
+                                        title="Active Patients"
+                                        value="12"
+                                        icon={<PeopleIcon aria-hidden="true" />}
+                                        actionLabel="View All"
+                                    />
+                                </Grid>
+                                <Grid size={{ xs: 12, sm: 4 }}>
+                                    <StatCard
+                                        title="Pending Consents"
+                                        value="3"
+                                        icon={<AssignmentIcon aria-hidden="true" />}
+                                        actionLabel="Review"
+                                        color="info.main"
+                                    />
+                                </Grid>
+                                <Grid size={{ xs: 12, sm: 4 }}>
+                                    <StatCard
+                                        title="Emergency Access"
+                                        value="0"
+                                        icon={<WarningIcon aria-hidden="true" />}
+                                        actionLabel="Log Audit"
+                                        color="error.main"
+                                    />
+                                </Grid>
                             </Grid>
-                            <Grid size={{ xs: 12, sm: 4 }}>
-                                <StatCard
-                                    title="Pending Consents"
-                                    value="3"
-                                    icon={<AssignmentIcon />}
-                                    actionLabel="Review"
-                                    color="info.main"
-                                />
-                            </Grid>
-                            <Grid size={{ xs: 12, sm: 4 }}>
-                                <StatCard
-                                    title="Emergency Access"
-                                    value="0"
-                                    icon={<WarningIcon />}
-                                    actionLabel="Log Audit"
-                                    color="error.main"
-                                />
-                            </Grid>
-                        </Grid>
+                        </Box>
 
-                        <Box mt={4}>
+                        <Box mt={4} component="section" aria-labelledby="announcements-title">
                             <Paper sx={{ p: 3 }}>
-                                <Typography variant="h6" gutterBottom>System Announcements</Typography>
-                                <Divider sx={{ mb: 2 }} />
+                                <Typography id="announcements-title" variant="h6" gutterBottom>System Announcements</Typography>
+                                <Divider sx={{ mb: 2 }} aria-hidden="true" />
                                 <Typography variant="body2" paragraph>
                                     - New ABAC policies for Psychiatric records are now active.
                                 </Typography>
@@ -114,23 +133,32 @@ const Dashboard = () => {
                                 </Typography>
                             </Paper>
                         </Box>
+
+                        <Box mt={4} component="section" aria-labelledby="recent-patients-title">
+                            <Typography id="recent-patients-title" variant="h6" sx={{ display: 'none' }}>Recent Patients</Typography>
+                            <RecentPatients />
+                        </Box>
                     </Grid>
 
-                    {/* Sidebar: Recent Patients */}
-                    <Grid size={{ xs: 12, md: 8 }}>
-                        <RecentPatients />
-                    </Grid>
-                    <Grid size={{ xs: 12, md: 4 }}>
-                        <Box mb={3}>
+                    {/* Sidebar */}
+                    <Grid size={{ xs: 12, md: 4 }} component="aside">
+                        <Box mb={3} component="section" aria-labelledby="alerts-title">
+                            <Typography id="alerts-title" variant="h6" sx={{ display: 'none' }}>Security Alerts</Typography>
                             <AnomalyAlerts />
                         </Box>
-                        <Paper sx={{ p: 2 }}>
+
+                        <Paper sx={{ p: 2 }} component="section" aria-labelledby="inbox-title">
                             <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
                                 <Box display="flex" alignItems="center" gap={1}>
-                                    <EmailIcon color="primary" />
-                                    <Typography variant="h6">Inbox</Typography>
+                                    <EmailIcon color="primary" aria-hidden="true" />
+                                    <Typography id="inbox-title" variant="h6">Inbox</Typography>
                                 </Box>
-                                <Button size="small" variant="outlined" startIcon={<SendIcon />}>
+                                <Button
+                                    size="small"
+                                    variant="outlined"
+                                    startIcon={<SendIcon aria-hidden="true" />}
+                                    aria-label="Compose new message"
+                                >
                                     New
                                 </Button>
                             </Box>
@@ -138,6 +166,14 @@ const Dashboard = () => {
                         </Paper>
                     </Grid>
                 </Grid>
+
+                <Box mt={8} pt={4} borderTop="1px solid" borderColor="divider">
+                    <Typography variant="caption" color="textSecondary" align="center" display="block">
+                        CONFIDENTIALITY NOTICE: This system contains protected health information (PHI) governed by HIPAA.
+                        Unauthorized access is strictly prohibited and subject to legal action.
+                        All access is monitored and logged for security and compliance auditing.
+                    </Typography>
+                </Box>
             </Container>
         </Box>
     );

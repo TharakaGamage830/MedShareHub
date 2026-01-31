@@ -79,9 +79,24 @@ const LoginForm = () => {
                         Sign in to MedShare Hub
                     </Typography>
 
-                    {error && <Alert severity="error" sx={{ width: '100%', mb: 2 }}>{error}</Alert>}
+                    {error && (
+                        <Alert
+                            severity="error"
+                            sx={{ width: '100%', mb: 2 }}
+                            role="alert"
+                            aria-live="assertive"
+                        >
+                            {error}
+                        </Alert>
+                    )}
 
-                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, width: '100%' }}>
+                    <Box
+                        component="form"
+                        onSubmit={handleSubmit}
+                        noValidate
+                        sx={{ mt: 1, width: '100%' }}
+                        aria-label="MedShare Hub Login Form"
+                    >
                         <TextField
                             margin="normal"
                             required
@@ -94,6 +109,9 @@ const LoginForm = () => {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             disabled={isLoading}
+                            inputProps={{
+                                'aria-required': true,
+                            }}
                         />
                         <TextField
                             margin="normal"
@@ -107,6 +125,9 @@ const LoginForm = () => {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             disabled={isLoading}
+                            inputProps={{
+                                'aria-required': true,
+                            }}
                         />
                         <Button
                             type="submit"
@@ -114,8 +135,10 @@ const LoginForm = () => {
                             variant="contained"
                             sx={{ mt: 3, mb: 2, height: 48 }}
                             disabled={isLoading}
+                            aria-busy={isLoading}
+                            aria-label={isLoading ? "Logging in, please wait" : "Sign In"}
                         >
-                            {isLoading ? <CircularProgress size={24} /> : 'Sign In'}
+                            {isLoading ? <CircularProgress size={24} aria-hidden="true" /> : 'Sign In'}
                         </Button>
                     </Box>
                 </Paper>

@@ -50,17 +50,17 @@ const AuditLogViewer: React.FC<AuditLogViewerProps> = ({ patientId }) => {
 
     return (
         <Box>
-            <Typography variant="h6" gutterBottom>Access History</Typography>
+            <Typography variant="h6" gutterBottom id="audit-logs-title">Access History</Typography>
             <TableContainer component={Paper}>
-                <Table size="small">
+                <Table size="small" aria-labelledby="audit-logs-title">
                     <TableHead>
                         <TableRow>
-                            <TableCell>Time</TableCell>
-                            <TableCell>User</TableCell>
-                            <TableCell>Action</TableCell>
-                            <TableCell>Resource</TableCell>
-                            <TableCell>Status</TableCell>
-                            <TableCell>Context</TableCell>
+                            <TableCell component="th" scope="col">Time</TableCell>
+                            <TableCell component="th" scope="col">User</TableCell>
+                            <TableCell component="th" scope="col">Action</TableCell>
+                            <TableCell component="th" scope="col">Resource</TableCell>
+                            <TableCell component="th" scope="col">Status</TableCell>
+                            <TableCell component="th" scope="col">Context</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -77,17 +77,19 @@ const AuditLogViewer: React.FC<AuditLogViewerProps> = ({ patientId }) => {
                                         label={log.decision}
                                         color={log.decision === 'PERMIT' ? 'success' : 'error'}
                                         size="small"
+                                        aria-label={`Access ${log.decision === 'PERMIT' ? 'Permitted' : 'Denied'}`}
                                     />
                                 </TableCell>
                                 <TableCell>
                                     {log.isEmergency && (
                                         <Chip
-                                            icon={<WarningIcon />}
+                                            icon={<WarningIcon aria-hidden="true" />}
                                             label="Emergency"
                                             color="warning"
                                             size="small"
                                             variant="outlined"
                                             title={log.justification}
+                                            aria-label={`Emergency access triggered. Reason: ${log.justification}`}
                                         />
                                     )}
                                 </TableCell>
@@ -95,7 +97,7 @@ const AuditLogViewer: React.FC<AuditLogViewerProps> = ({ patientId }) => {
                         ))}
                         {logs.length === 0 && (
                             <TableRow>
-                                <TableCell colSpan={6} align="center">No access logs found.</TableCell>
+                                <TableCell colSpan={6} align="center" role="alert">No access logs found.</TableCell>
                             </TableRow>
                         )}
                     </TableBody>
