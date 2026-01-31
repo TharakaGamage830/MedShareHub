@@ -39,7 +39,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final com.medshare.hub.security.RateLimitFilter rateLimitFilter;
+    private final com.medshare.hub.security.XssFilter xssFilter;
 
     /**
      * Security filter chain configuration
@@ -47,8 +48,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                // CSRF disabled (using JWT)
-                .csrf(AbstractHttpConfigurer::disable)
+                // CSRF enabled for non-GET requests using CookieCsrfTokenRepository
+                .csrf(csrf -> csrf
+                        .csrfTokenRepository(
+                                org.springframework.security.web.csrf.CookieCsrfTokenRepository.withHttpOnlyFalse())
+                        .ignoringRequestMatchers("/api/auth/login") // Disable for initial login if necessary
+                )
 
                 // CORS configuration
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
@@ -66,7 +71,9 @@ public class SecurityConfig {
                         // All other endpoints require authentication
                         .anyRequest().authenticated())
 
-                // Add JWT filter
+                // Add filters
+                .addFilterBefore(rateLimitFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(xssFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
 
                 // Secure headers

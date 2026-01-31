@@ -18,6 +18,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @SpringBootApplication
 @EnableCaching
 @EnableJpaAuditing
+@org.springframework.scheduling.annotation.EnableAsync
 public class MedShareHubApplication {
 
     public static void main(String[] args) {
