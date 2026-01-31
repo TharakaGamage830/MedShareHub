@@ -1,6 +1,8 @@
 package com.medshare.hub.service;
 
 import com.medshare.hub.entity.AccessLog;
+import com.medshare.hub.entity.Patient;
+import com.medshare.hub.entity.User;
 import com.medshare.hub.repository.AccessLogRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -75,18 +77,17 @@ public class AuditService {
             String justification,
             String ipAddress,
             String sessionId) {
-        AccessLog log = new AccessLog();
         AccessLog accessLog = new AccessLog();
-        accessLog.setUser(userId != null ? new com.medshare.hub.entity.User() {
-            {
-                setUserId(userId);
-            }
-        } : null);
-        accessLog.setPatient(patientId != null ? new com.medshare.hub.entity.Patient() {
-            {
-                setPatientId(patientId);
-            }
-        } : null);
+        if (userId != null) {
+            User u = new User();
+            u.setUserId(userId);
+            accessLog.setUser(u);
+        }
+        if (patientId != null) {
+            Patient p = new Patient();
+            p.setPatientId(patientId);
+            accessLog.setPatient(p);
+        }
         accessLog.setResourceType(resourceType);
         accessLog.setResourceId(resourceId);
         accessLog.setAction(action);

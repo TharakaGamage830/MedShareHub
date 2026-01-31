@@ -69,7 +69,7 @@ public class AbacInterceptor implements HandlerInterceptor {
                 .role(user.getRole().name())
                 .department(user.getDepartment())
                 .certifications(user.getCertifications() != null ? user.getCertifications()
-                        : java.util.Collections.emptyList())
+                        : new String[0])
                 .build();
 
         ResourceAttributes resource = ResourceAttributes.builder()
