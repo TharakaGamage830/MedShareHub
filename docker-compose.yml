@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: medshare-db
+    environment:
+      POSTGRES_DB: medshare_hub
+      POSTGRES_USER: medshare_user
+      POSTGRES_PASSWORD: medshare_secure_password_2026
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - medshare-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: medshare-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - medshare-network
+
+networks:
+  medshare-network:
+    driver: bridge
+
+volumes:
+  postgres_data:

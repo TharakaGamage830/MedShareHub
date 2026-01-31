@@ -67,7 +67,14 @@ public class SecurityConfig {
                         .anyRequest().authenticated())
 
                 // Add JWT filter
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+
+                // Secure headers
+                .headers(headers -> headers
+                        .frameOptions(frame -> frame.deny())
+                        .contentSecurityPolicy(
+                                csp -> csp.policyDirectives("default-src 'self'; frame-ancestors 'none';"))
+                        .httpStrictTransportSecurity(hsts -> hsts.includeSubDomains(true).maxAgeInSeconds(31536000L)));
 
         return http.build();
     }
